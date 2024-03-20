@@ -158,8 +158,8 @@ while True:
             no_valido = True
             while no_valido:
                 nuevo_nombre = input('Nuevo nombre estudiante: ')
-                len_nombre = len(nuevo_nombre)
-                if len_nombre != 0:
+                len_nombre = len(nuevo_nombre.replace(' ', '')) > 0
+                if len_nombre > 0:
                     no_valido = False
                 else:
                             print('Nombre vacio, ingrese nuevamente el nombre.')
@@ -167,8 +167,8 @@ while True:
             no_valido = True
             while no_valido:
                 nuevo_apellido = input('Nuevo apellido estudiante: ')
-                len_apellido = len(nuevo_apellido)
-                if len_apellido != 0:
+                len_nombre = len(nuevo_apellido.replace(' ', '')) > 0
+                if len_apellido > 0:
                     no_valido = False
                 else:
                     print('Apellido vacio, ingrese nuevamente el apellido.')
