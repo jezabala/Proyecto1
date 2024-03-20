@@ -6,9 +6,7 @@ Curso: Python | Desarrollo BackEnd.
 '''
 
 lista_estudiantes = []
-no_valido = True
 is_number = None
-
 
 while True:
     opcion = input(''' Gestion de estudiantes.
@@ -28,9 +26,34 @@ while True:
         print('--------------------------------------------')
     elif opcion == "2":
         print('---------- REGISTRAR ESTUDIANTE ----------')
-        nombre = input('Nombre: ')
-        apellido = input('Apellido: ')
-        cedula = input('Cedula: ')
+
+        no_valido = True
+        while no_valido:
+            nombre = input('Nombre: ')
+            len_nombre = len(nombre.replace(' ', '')) > 0
+            if len_nombre:
+                no_valido = False
+            else:
+                print('Nombre vacio, ingrese nuevamente el nombre.')
+
+        no_valido = True
+        while no_valido:
+            apellido = input('Apellido: ')
+            len_apellido = len(apellido.replace(' ', '')) > 0
+            if len_apellido:
+                no_valido = False
+            else:
+                print('Apellido vacio, ingrese nuevamente el apellido.')
+
+        no_valido = True
+        while no_valido:
+            cedula = input('Cedula: ')
+            cedula_valida = len(cedula.replace(' ','')) > 0
+            if cedula_valida:
+                cedula = cedula
+                no_valido = False
+            else:
+                print('Cedula invalida, introduce la cedula de nuevo.')
 
         ''' Se validan de las notas, para comprobar que se ingresa un 
         numero entero o flotante para evitar errores en el calculo del 
@@ -73,6 +96,7 @@ while True:
                 print('Nota no valida. Vuelva a ingresar la nota.')
                 print()
         
+
         no_valido = True
         while no_valido:
             nota3 = input('Nota 3: ')
@@ -109,105 +133,145 @@ while True:
         lista_estudiantes.append(estudiante)
         print('Estudiante registrado exitosamente.')
         print('------------------------------------------')
+    
     elif opcion == "3":
-        print('-------------- ACTUALIZAR ESTUDIANTE --------------')
-        cedula_estudiante = input('Introduce la cedula del estudiante a actualizar: ')
+        print('---------- ACTUALIZAR ESTUDIANTE ----------')
+        cedula_valida = False
+        while not cedula_valida:
+            cedula_ingresada = input('Introduce la cedula del estudiante a actualizar: ')
+            validar_cedula = len(cedula_ingresada.replace(' ', '')) > 0
+            if validar_cedula:
+                cedula_ingresada = cedula_ingresada
+                cedula_valida = True
+            else:
+                print('Cedula no valida, ingrese nuevamente la cedula.')
+        
+        estudiante_existente = False
         longitud_lista_estudiantes = len(lista_estudiantes)
-
-        ''' Se verifica que al momento de actualizar datos de un estudiante, primero existan dentro de la lista
-        estudiantes registrados, si existen estudiantes registrados se procede a la busqueda mediante su 
-        numero de cedula, esto permite controlar los errores y fallos del sistema. '''
-
-        if longitud_lista_estudiantes != 0:
+        if longitud_lista_estudiantes > 0:
             for estudiante in lista_estudiantes:
-                if estudiante['Cedula'] == cedula_estudiante:
-                    nuevo_nombre = input('Nuevo nombre estudiante: ')
-                    nuevo_apellido = input('Nuevo apellido estudiante: ')
-                    nueva_cedula = input('Nueva cedula estudiante: ')
+                if estudiante['Cedula'] == cedula_ingresada:
+                    estudiante_existente = True
+                    break
+        
+        if estudiante_existente:
+            no_valido = True
+            while no_valido:
+                nuevo_nombre = input('Nuevo nombre estudiante: ')
+                len_nombre = len(nuevo_nombre)
+                if len_nombre != 0:
+                    no_valido = False
+                else:
+                            print('Nombre vacio, ingrese nuevamente el nombre.')
+                        
+            no_valido = True
+            while no_valido:
+                nuevo_apellido = input('Nuevo apellido estudiante: ')
+                len_apellido = len(nuevo_apellido)
+                if len_apellido != 0:
+                    no_valido = False
+                else:
+                    print('Apellido vacio, ingrese nuevamente el apellido.')
 
-                    ''' Se validan las notas, para comprobar que se ingresa un 
-                    numero entero o flotante para evitar errores en el calculo del 
-                    promedio. '''
-                    no_valido = True
-                    while no_valido:
-                        nueva_nota1 = input('Nueva Nota 1: ')
-                        is_number = nueva_nota1.replace('.', '').isdigit()
-                        if is_number:
-                            if '.' in nueva_nota1:
-                                nueva_nota1 = float(nueva_nota1)
-                                no_valido = False
-                                is_number = None
-                            elif '.' not in nueva_nota1:
-                                nueva_nota1 = int(nueva_nota1)
-                                no_valido = False
-                                is_number = None
-                        else:
-                            print()
-                            print('Nota no valida. Vuelva a ingresar la nota.')
-                            print()
+            no_valido = True
+            cedula_valida = None
+            while no_valido:
+                nueva_cedula = input('Nueva cedula estudiante: ')
+                cedula_valida = len(nueva_cedula.replace(' ', '')) > 0
+                if cedula_valida:
+                    no_valido = False
+                else:
+                    print('Cedula invalida, introduce la cedula de nuevo.')
 
-                    no_valido = True
-                    while no_valido:
-                        nueva_nota2 = input('Nueva Nota 2: ')
-                        is_number = nueva_nota2.replace('.', '').isdigit()
-                        if is_number:
-                            if '.' in nueva_nota2:
-                                nueva_nota2 = float(nueva_nota2)
-                                no_valido = False
-                                is_number = None
-                            elif '.' not in nueva_nota2:
-                                nueva_nota2 = int(nueva_nota2)
-                                no_valido = False
-                                is_number = None
-                        else:
-                            print()
-                            print('Nota no valida. Vuelva a ingresar la nota.')
-                            print()
+            ''' Se validan las notas, para comprobar que se ingresa un 
+            numero entero o flotante para evitar errores en el calculo del 
+            promedio. '''
+
+            no_valido = True
+            while no_valido:
+                nueva_nota1 = input('Nueva Nota 1: ')
+                is_number = nueva_nota1.replace('.', '').isdigit()
+                if is_number:
+                    if '.' in nueva_nota1:
+                        nueva_nota1 = float(nueva_nota1)
+                        no_valido = False
+                        is_number = None
+                    elif '.' not in nueva_nota1:
+                        nueva_nota1 = int(nueva_nota1)
+                        no_valido = False
+                        is_number = None
+                    else:
+                        print()
+                        print('Nota no valida. Vuelva a ingresar la nota.')
+                        print()
+
+            no_valido = True
+            while no_valido:
+                nueva_nota2 = input('Nueva Nota 2: ')
+                is_number = nueva_nota2.replace('.', '').isdigit()
+                if is_number:
+                    if '.' in nueva_nota2:
+                        nueva_nota2 = float(nueva_nota2)
+                        no_valido = False
+                        is_number = None
+                    elif '.' not in nueva_nota2:
+                        nueva_nota2 = int(nueva_nota2)
+                        no_valido = False
+                        is_number = None
+                    else:
+                        print()
+                        print('Nota no valida. Vuelva a ingresar la nota.')
+                        print()
 
 
-                    no_valido = True
-                    while no_valido:
-                        nueva_nota3 = input('Nueva Nota 3: ')
-                        is_number = nueva_nota3.replace('.', '').isdigit()
-                        if is_number:
-                            if '.' in nueva_nota3:
-                                nueva_nota3 = float(nueva_nota3)
-                                no_valido = False
-                                is_number = None
-                            elif '.' not in nueva_nota3:
-                                nueva_nota3 = int(nueva_nota3)
-                                no_valido = False
-                                is_number = None
-                        else:
-                            print()
-                            print('Nota no valida. Vuelva a ingresar la nota.')
-                            print()
+            no_valido = True
+            while no_valido:
+                nueva_nota3 = input('Nueva Nota 3: ')
+                is_number = nueva_nota3.replace('.', '').isdigit()
+                if is_number:
+                    if '.' in nueva_nota3:
+                        nueva_nota3 = float(nueva_nota3)
+                        no_valido = False
+                        is_number = None
+                    elif '.' not in nueva_nota3:
+                        nueva_nota3 = int(nueva_nota3)
+                        no_valido = False
+                        is_number = None
+                    else:
+                        print()
+                        print('Nota no valida. Vuelva a ingresar la nota.')
+                        print()
 
                     # Se calcula el promedio del estudiante
-                    nuevo_promedio = round(((nueva_nota1+nueva_nota2+nueva_nota3) / 3), 2)
+            nuevo_promedio = round(((nueva_nota1+nueva_nota2+nueva_nota3) / 3), 2)
 
                     # Se actualizan los datos del estudiante.
-                    estudiante.update({
-                        'Nombre': nuevo_nombre,
-                        'Apellido': nuevo_apellido,
-                        'Cedula': nueva_cedula,
-                        'Nota 1': nueva_nota1,
-                        'Nota 2': nueva_nota2,
-                        'Nota 3': nueva_nota3,
-                        'Promedio': nuevo_promedio
-                    })
-                    print('Datos del estudiante actualizados exitosamente.')
-                else:
-                    print('Error. Estudiante no registrado')
+            estudiante.update({
+                'Nombre': nuevo_nombre,
+                'Apellido': nuevo_apellido,
+                'Cedula': nueva_cedula,
+                'Nota 1': nueva_nota1,
+                'Nota 2': nueva_nota2,
+                'Nota 3': nueva_nota3,
+                'Promedio': nuevo_promedio
+            })
+            print('Datos del estudiante actualizados exitosamente.')
         else:
-            print()
-            print('No existen estudiantes registrados en el sistema, no se pueden actualizar datos.')
-            print()
-
+            print('Estudiante no encontrado.')
         print('----------------------------------------------------')
     elif opcion == "4":
         print('---------------- ELIMINAR ESTUDIANTE ----------------')
-        cedula_estudiante = input('Cedula del estudiante a eliminar: ')
+        cedula_valida = False
+        while not cedula_valida:
+            cedula_estudiante = input('Cedula del estudiante a eliminar: ')
+            validar_cedula = len(cedula_estudiante.replace(' ', '')) > 0
+            if validar_cedula:
+                cedula_estudiante = cedula_estudiante
+                cedula_valida = True
+            else:
+                print('Cedula no valida, ingrese nuevamente la cedula.')
+
+        
         longitud_lista_estudiantes = len(lista_estudiantes)
 
         ''' Se verifica que al momento de eliminar un estudiante, primero existan dentro de la lista
@@ -223,8 +287,6 @@ while True:
                     print(lista_estudiantes[index_student])
                     lista_estudiantes.pop(index_student)
                     print('Estudiante eliminado exitosamente.')
-                else:
-                    print('Error. Estudiante no existente.')
                     break
         else:
             print()
