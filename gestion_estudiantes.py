@@ -44,16 +44,27 @@ while True:
                 no_valido = False
             else:
                 print('Apellido vacio, ingrese nuevamente el apellido.')
+        
+        
 
         no_valido = True
         while no_valido:
             cedula = input('Cedula: ')
             cedula_valida = len(cedula.replace(' ','')) > 0
-            if cedula_valida:
+
+            estudiante_existe = False
+            if len(lista_estudiantes) > 0:
+                for estudiante in lista_estudiantes:
+                    if estudiante['Cedula'] == cedula:
+                        estudiante_existe = True
+                        break
+
+
+            if cedula_valida and not estudiante_existe:
                 cedula = cedula
                 no_valido = False
             else:
-                print('Cedula invalida, introduce la cedula de nuevo.')
+                print('La cedula ingresada coincide con la de otro estudiante. Introduce nuevamente la cedula')
 
         ''' Se validan de las notas, para comprobar que se ingresa un 
         numero entero o flotante para evitar errores en el calculo del 
@@ -172,16 +183,27 @@ while True:
                     no_valido = False
                 else:
                     print('Apellido vacio, ingrese nuevamente el apellido.')
-
+            
+            
             no_valido = True
             cedula_valida = None
             while no_valido:
                 nueva_cedula = input('Nueva cedula estudiante: ')
                 cedula_valida = len(nueva_cedula.replace(' ', '')) > 0
-                if cedula_valida:
+
+                coincide = False
+                for e in lista_estudiantes:
+                    if e != estudiante and e['Cedula'] == nueva_cedula:
+                        coincide = True
+                        break         
+
+                if cedula_valida and not coincide:
+                    estudiante['Cedula'] == nueva_cedula or estudiante['Cedula']
                     no_valido = False
+                elif coincide:
+                    print('Error. La cedula coincide con otro estudiante.')
                 else:
-                    print('Cedula invalida, introduce la cedula de nuevo.')
+                    print('Cedula incorrecta, ingrese nuevamente la cedula.')
 
             ''' Se validan las notas, para comprobar que se ingresa un 
             numero entero o flotante para evitar errores en el calculo del 
@@ -288,9 +310,13 @@ while True:
                     lista_estudiantes.pop(index_student)
                     print('Estudiante eliminado exitosamente.')
                     break
+                else:
+                    print('Estudiante no encontrado.')
+                    break
+
         else:
             print()
-            print('No existen estudiantes registrados en el sistema, no se pueden actualizar datos.')
+            print('No existen estudiantes registrados en el sistema, no se pueden eliminar datos.')
             print()
         print('----------------------------------------------------')
     elif opcion == "5":
