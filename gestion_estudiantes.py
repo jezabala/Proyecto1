@@ -52,6 +52,11 @@ while True:
             cedula = input('Cedula: ')
             cedula_valida = len(cedula.replace(' ','')) > 0
 
+            '''
+                Se verifica que la cedula ingresada no corresponda a otro estudiante ya existente,
+                para evitar errores de funcionamiento del programa.
+            '''
+
             estudiante_existe = False
             if len(lista_estudiantes) > 0:
                 for estudiante in lista_estudiantes:
@@ -157,6 +162,10 @@ while True:
             else:
                 print('Cedula no valida, ingrese nuevamente la cedula.')
         
+        '''
+            Se verifica que el estudiante exista dentro de la lista, para luego
+            cambiar sus datos.
+        '''
         estudiante_existente = False
         longitud_lista_estudiantes = len(lista_estudiantes)
         if longitud_lista_estudiantes > 0:
@@ -164,6 +173,8 @@ while True:
                 if estudiante['Cedula'] == cedula_ingresada:
                     estudiante_existente = True
                     break
+        else:
+            print('No se puede buscar el estudiante debido a que la lista esta vacia.')
         
         if estudiante_existente:
             no_valido = True
@@ -173,7 +184,7 @@ while True:
                 if len_nombre > 0:
                     no_valido = False
                 else:
-                            print('Nombre vacio, ingrese nuevamente el nombre.')
+                    print('Nombre vacio, ingrese nuevamente el nombre.')
                         
             no_valido = True
             while no_valido:
@@ -191,6 +202,12 @@ while True:
                 nueva_cedula = input('Nueva cedula estudiante: ')
                 cedula_valida = len(nueva_cedula.replace(' ', '')) > 0
 
+
+                ''' Se verifica que la cedula ingresada no corresponda a otro estudiante ya existente,
+                    o que el estudiante ingrese la misma cedula con la que se registro para realizar
+                    cambios en sus datos y evitar errores de funcionamiento del programa. '''
+                
+
                 coincide = False
                 for e in lista_estudiantes:
                     if e != estudiante and e['Cedula'] == nueva_cedula:
@@ -204,6 +221,7 @@ while True:
                     print('Error. La cedula coincide con otro estudiante.')
                 else:
                     print('Cedula incorrecta, ingrese nuevamente la cedula.')
+
 
             ''' Se validan las notas, para comprobar que se ingresa un 
             numero entero o flotante para evitar errores en el calculo del 
@@ -288,7 +306,6 @@ while True:
             cedula_estudiante = input('Cedula del estudiante a eliminar: ')
             validar_cedula = len(cedula_estudiante.replace(' ', '')) > 0
             if validar_cedula:
-                cedula_estudiante = cedula_estudiante
                 cedula_valida = True
             else:
                 print('Cedula no valida, ingrese nuevamente la cedula.')
@@ -301,7 +318,7 @@ while True:
         numero de cedula y por ultimo se eliminan sus datos, esto permite controlar los errores y fallos 
         del sistema. '''
 
-        if longitud_lista_estudiantes != 0:
+        if longitud_lista_estudiantes > 0:
             for estudiante in lista_estudiantes:
                 if estudiante['Cedula'] == cedula_estudiante:
                     index_student = lista_estudiantes.index(estudiante)
@@ -310,10 +327,6 @@ while True:
                     lista_estudiantes.pop(index_student)
                     print('Estudiante eliminado exitosamente.')
                     break
-                else:
-                    print('Estudiante no encontrado.')
-                    break
-
         else:
             print()
             print('No existen estudiantes registrados en el sistema, no se pueden eliminar datos.')
